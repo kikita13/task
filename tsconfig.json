@@ -8,6 +8,17 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
+    "paths": {
+      "header": [
+        "./dist/header"
+      ],
+      "map": [
+        "./dist/map"
+      ],
+      "schedule": [
+        "./dist/schedule"
+      ]
+    },
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

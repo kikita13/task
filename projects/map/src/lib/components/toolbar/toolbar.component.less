@@ -1,0 +1,38 @@
+:host {
+  height: 100%;
+}
+
+.tools {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+  padding: 0 2rem;
+
+  button {
+    border-radius: 1rem;
+    padding: 0.4rem 1rem;
+    background-color: #526ed3;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease-out;
+    border: none;
+
+    &:hover {
+      background-color: #526ed3cb;
+    }
+  }
+
+  input {
+    border: 1px solid #526ed3cb;
+    padding: .5rem;
+    border-radius: 1rem;
+    font-size: 16px;
+    text-align: center;
+    position: relative;
+  }
+
+  .input {
+    text-align: center;
+  }
+}

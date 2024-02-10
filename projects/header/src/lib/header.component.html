@@ -1,0 +1,5 @@
+<nav>
+  @for (item of headerItems; track item.path) {
+    <div class="header-item" [routerLink]="item.path">{{ item.title }}</div>
+  }
+</nav>

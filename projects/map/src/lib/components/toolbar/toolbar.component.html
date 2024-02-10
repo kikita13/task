@@ -1,0 +1,17 @@
+<div class="tools">
+  <button (click)="onDrawPolygon()">Создать полигон</button>
+  <button (click)="onDeletePolygon()">Удалить полигон</button>
+  <button (click)="onDeleteAllPolygon()">Удалить все полигоны</button>
+  <button (click)="onChoosePolygon()">Выделить полигон</button>
+  <button (click)="onEditPolygon()">Редактировать полигон</button>
+
+  <div class="input">
+    <label for="input">Высота полигона</label>
+    <input 
+      [(ngModel)]="height" 
+      id="input" 
+      placeholder="Высота полигона"
+      (ngModelChange)="onHeightCount($event)"
+      />
+  </div>
+</div>
