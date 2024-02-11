@@ -1,0 +1,15 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="toSearch()">
+    <input type="text" formControlName="from">
+    <input type="text" formControlName="to">
+    <input type="date" formControlName="date">
+  </form>
+
+  <div class="svg">
+    @for(item of svg; track item.path) {
+    <div class="icon" (click)="chooseType(item.value)">
+      <img [src]="item.path" />
+    </div>
+    }
+  </div>
+</div>

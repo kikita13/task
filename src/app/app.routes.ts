@@ -7,17 +7,15 @@ export const routes: Routes = [
     path: 'map',
     title: 'Карта',
     component: MapComponent,
-    pathMatch: 'full'
   },
   {
     path: 'schedule',
     title: 'Расписание',
     component: ScheduleComponent,
-    pathMatch: 'full'
   },
   {
     path: '',
     redirectTo: 'map',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
 ];
