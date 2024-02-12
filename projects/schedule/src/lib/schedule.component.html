@@ -2,18 +2,42 @@
   <form [formGroup]="form" (ngSubmit)="toSearch()">
     <div class="search">
       <div class="inputs">
-        <input type="text" placeholder="Откуда" formControlName="from">
+        <div class="autoComplete">
+          <input type="text" placeholder="Откуда" (input)="autoComplete(form.get('from')?.value, names$.value, 'from')"
+            formControlName="from">
+
+          @if ((!fromSelected || !(completeNamesFrom$ | async)?.length) && form.get('from')?.value.length > 3){
+          <div class="names">
+            <span *ngFor="let name of completeNamesFrom$ | async" class="name"
+              (click)="onChooseName(form.get('from'), 'from', name)">{{ name }}</span>
+          </div>
+          }
+        </div>
         <span class="line"></span>
-        <input type="text" placeholder="Куда" formControlName="to">
+
+        <div class="autoComplete">
+          <input type="text" placeholder="Куда" (input)="autoComplete(form.get('to')?.value, names$.value, 'to')"
+            formControlName="to">
+          @if ((!toSelected || !(completeNamesTo$ | async)?.length) && form.get('to')?.value.length > 3) {
+          <div class="names">
+            <span *ngFor="let name of completeNamesTo$ | async" (click)="onChooseName(form.get('to'), 'to', name)"
+              class="name">
+              {{ name }}</span>
+          </div>
+          }
+        </div>
       </div>
 
       <img src="assets/svg/arrows.svg" (click)="toSwitch()">
     </div>
 
     <div class="date">
-      <button type="button" class="date__item--left date__item active" [class.active]="selectedDate === 'today'" (click)="chooseDate('today')">Сегодня</button>
-      <button type="button" class="date__item date__item--middle" [class.active]="selectedDate === 'tomorrow'" (click)="chooseDate('tomorrow')">Завтра</button>
-      <button type="button" (click)="showDate" class="date__item date__item--right" [class.active]="selectedDate === 'date'" (click)="chooseDate('calendar')">
+      <button type="button" class="date__item--left date__item active" [class.active]="selectedDate === 'today'"
+        (click)="chooseDate('today')">Сегодня</button>
+      <button type="button" class="date__item date__item--middle" [class.active]="selectedDate === 'tomorrow'"
+        (click)="chooseDate('tomorrow')">Завтра</button>
+      <button type="button" (click)="showDate" class="date__item date__item--right"
+        [class.active]="selectedDate === 'date'" (click)="chooseDate('calendar')">
         {{!dateSelected ? 'Дата' : form.value.date | date:'MMM d'}} </button>
       @if(showDate){
       <tui-calendar (dayClick)="setDate($event)"></tui-calendar>
@@ -33,9 +57,10 @@
     </div>
     <button type="submit" class="submit">Найти</button>
   </form>
+</div>
 
-  @for (i of routes$ | async; track i.title) {
-    {{i}}
+<div class="segments">
+  @for (segment of segments$ | async; track segment) {
+  <lib-route [segment]="segment" [search]="search$ | async"></lib-route>
   }
-
 </div>

@@ -1,5 +1,6 @@
 import { Detail } from './detail';
 import { Station } from './station';
+import { Thread } from './thread';
 import { Transfer } from './transfer';
 
 export interface Segment {
@@ -11,4 +12,7 @@ export interface Segment {
   transfers?: Transfer[];
   has_transfers: boolean;
   details?: Detail[];
+  thread?: Thread;
+  from?: Station;
+  to?: Station;
 }

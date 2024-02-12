@@ -7,7 +7,7 @@ export const SVG: { path?: string; value: string }[] = [
     value: 'plane',
   },
   {
-    path: 'assets/svg/sub.svg',
+    path: 'assets/svg/suburban.svg',
     value: 'suburban',
   },
   {

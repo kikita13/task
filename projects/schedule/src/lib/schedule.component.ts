@@ -2,14 +2,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnInit,
-  ViewChild,
   inject,
 } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  debounceTime,
+  map,
+  takeUntil,
+} from 'rxjs';
 import { ScheduleService } from '../public-api';
 import { CommonModule } from '@angular/common';
 import { SVG } from './consts/svg';
-import { SearchResult } from './models/searchResult';
 import {
   FormControl,
   FormGroup,
@@ -17,24 +21,41 @@ import {
   Validators,
 } from '@angular/forms';
 import { TuiCalendarModule } from '@taiga-ui/core';
-import { TuiDay } from '@taiga-ui/cdk';
+import { TuiDay, TuiDestroyService } from '@taiga-ui/cdk';
+import { SearchResult } from './models/searchResult';
+import { Segment } from './models/segment';
+import { RouteComponent } from './components/route/route.component';
+import { Search } from './models/search';
 
 @Component({
   selector: 'lib-schedule',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TuiCalendarModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TuiCalendarModule,
+    RouteComponent,
+  ],
   templateUrl: './schedule.component.html',
   styleUrl: './schedule.component.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [TuiDestroyService],
 })
 export class ScheduleComponent implements OnInit {
-  readonly routes$ = new BehaviorSubject<any>([]);
+  readonly segments$ = new BehaviorSubject<Segment[] | null>([]);
+  readonly search$ = new BehaviorSubject<Search | null>(null);
+  readonly names$ = new BehaviorSubject<string[]>([]);
+  readonly completeNamesFrom$ = new BehaviorSubject<string[]>([]);
+  readonly completeNamesTo$ = new BehaviorSubject<string[]>([]);
   private readonly scheduleService = inject(ScheduleService);
+  private readonly destroy = inject(TuiDestroyService);
 
   readonly svg = SVG;
 
   showDate = false;
   dateSelected = false;
+  fromSelected = false;
+  toSelected = false;
   selectedDate = 'today';
   transport = ' ';
 
@@ -46,26 +67,20 @@ export class ScheduleComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.scheduleService.getAllStations().subscribe()
+    this.scheduleService
+      .getAllStations()
+      .pipe(takeUntil(this.destroy))
+      .subscribe((data: any) => this.names$.next(data.names));
   }
 
   chooseType(transport: string) {
     const transportType = this.form.get('transport');
-    
+
     transportType?.setValue(transport);
-    
+
     this.transport = transport;
 
-    if (transport !== ' ') {
-      this.routes$.pipe(
-        map((data: SearchResult[]) =>
-          data.map((item) =>
-            item.segments.map((i) => i.transport_types.includes(transport))
-          )
-        )
-      );
-    } else {
-    }
+    this.toSearch();
   }
 
   toSearch() {
@@ -76,9 +91,10 @@ export class ScheduleComponent implements OnInit {
         this.form.value.transport,
         this.form.value.date
       )
-      .subscribe((data) => this.routes$.next(data));
-
-      console.log(this.form.value)
+      .subscribe((data: SearchResult) => {
+        this.segments$.next(data.segments);
+        this.search$.next(data.search);
+      });
   }
 
   toSwitch() {
@@ -113,6 +129,8 @@ export class ScheduleComponent implements OnInit {
 
       this.showDate = !this.showDate;
     }
+
+    this.toSearch();
   }
 
   getDate(date: Date) {
@@ -127,5 +145,33 @@ export class ScheduleComponent implements OnInit {
     const newDate = new Date(date.year, date.month, date.day + 1);
 
     if (dateControl) dateControl.setValue(this.getDate(newDate));
+    this.toSearch();
+  }
+
+  autoComplete(str: string, names: string[], inputType: string) {
+    if (str.length < 3) {
+      return;
+    } else {
+      const filteredNames = names.filter((item) =>
+        item.toLowerCase().includes(str.toLowerCase())
+      );
+      if (inputType === 'from') {
+        this.fromSelected = false;
+        this.completeNamesFrom$.next(filteredNames);
+      } else if (inputType === 'to') {
+        this.toSelected = false;
+        this.completeNamesTo$.next(filteredNames);
+      }
+    }
+  }
+
+  onChooseName(form: any, formName: string, name: string) {
+    if (form) form.setValue(name);
+
+    if (formName === 'from') {
+      this.fromSelected = true;
+    } else if (formName === 'to') {
+      this.toSelected = true;
+    }
   }
 }

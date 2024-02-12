@@ -5,13 +5,14 @@ const router = Router();
 
 let cacheAllStations;
 let cacheDate;
+let settlementsAll = [];
 
 const map = new Map();
 
 router.get("/stations", async (req, res, next) => {
   const currentDate = new Date();
 
-  if (!cacheAllStations || currentDate - cacheDate > 500000) {
+  if (!cacheAllStations) {
     const allStations = await fetch(API_URL("stations_list"));
     const json = await allStations.json();
 
@@ -20,7 +21,7 @@ router.get("/stations", async (req, res, next) => {
     createStationMap(cacheAllStations);
   }
 
-  res.json(cacheAllStations);
+  res.json({ stations: cacheAllStations, names: [...new Set(settlementsAll)] });
 });
 
 router.get(
@@ -70,6 +71,9 @@ function createStationMap(data) {
       for (const settlement of settlements) {
         const settlementTitle = settlement.title;
         const settlementCodes = settlement.codes;
+
+        if (settlementTitle !== '') settlementsAll.push(settlement.title);
+
         const settlementSpot = {
           title: settlementTitle,
           codes: settlementCodes,

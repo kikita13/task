@@ -1,12 +1,9 @@
-import { Segment } from "./segment";
-import { Station } from "./station";
+import { Search } from './search';
+import { Segment } from './segment';
+import { Station } from './station';
 
 export interface SearchResult {
-  search: {
-    from: Station;
-    to: Station;
-    date: string;
-  };
+  search: Search;
   segments: Segment[];
   interval_segments: any[];
   pagination: {

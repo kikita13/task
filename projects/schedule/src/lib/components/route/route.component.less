@@ -1,0 +1,58 @@
+.segment {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+
+  .main-info {
+    display: flex;
+    align-items: start;
+
+    .images {
+      display: flex;
+      flex-direction: column;
+    }
+
+    img {
+      width: 24px;
+    }
+    .route-info {
+      display: flex;
+      flex-direction: column;
+      width: 120px;
+    }
+  }
+
+  .sub-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    .route {
+      display: flex;
+      flex-direction: column;
+      width: 100px;
+
+      &.to {
+        span {
+          text-align: end;
+        }
+      }
+    }
+  }
+}
+
+.secondary-color {
+  color: #969696;
+}
+
+.secondary-fz {
+  font-size: 10px;
+}
+
+.strong-font {
+  font-weight: bold;
+}
+
+.big-font {
+  font-size: 16px;
+}

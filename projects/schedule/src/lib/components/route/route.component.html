@@ -1,0 +1,72 @@
+<div class="segment">
+  @if (!segment.has_transfers) {
+  <div class="main-info">
+    <img [src]="'assets/svg/' + segment.thread?.transport_type + '.svg'" />
+
+    <div class="route-info">
+      <span>
+        {{ search?.from?.title }} - {{search?.to?.title}}
+      </span>
+
+      <span class="secondary-color secondary-fz">{{ segment.thread?.carrier?.title }}</span>
+
+      <span class="secondary-color secondary-fz">{{ segment.thread?.vehicle || segment.thread?.number }}</span>
+    </div>
+  </div>
+
+  <div class="sub-info">
+    <div class="from route">
+      <span class="secondary-color secondary-fz">{{ segment.departure.split('T')[0] | date:'MMM d' }}</span>
+
+      <span class="big-font strong-font">{{ localeTime(segment.departure) }}</span>
+
+      <span class="secondary-color">{{ segment.from?.title }}</span>
+    </div>
+
+    <span class="secondary-color">{{ calculateDuration(segment.departure, segment.arrival)}}</span>
+
+    <div class="to route">
+      <span class="secondary-color secondary-fz">{{ segment.arrival.split('T')[0] | date:'MMM d' }}</span>
+
+      <span class="big-font strong-font">{{ localeTime(segment.arrival) }}</span>
+
+      <span class="secondary-color">{{ segment.to?.title }}</span>
+    </div>
+  </div>
+  } @else {
+    <div class="main-info">
+      <div class="images">
+        @for (img of segment.transport_types; track img) {
+          <img [src]="'assets/svg/' + img + '.svg'" />
+        }
+      </div>
+  
+      <div class="route-info">
+        <span>
+          {{ search?.from?.title }} - {{search?.to?.title}}
+        </span>
+        <span>С пересадкой в {{ segment.transfers && segment.transfers[0].title}}</span>
+      </div>
+    </div>
+  
+    <div class="sub-info">
+      <div class="from route">
+        <span class="secondary-color secondary-fz">{{ segment.departure.split('T')[0] | date:'MMM d' }}</span>
+  
+        <span class="big-font strong-font">{{ localeTime(segment.departure) }}</span>
+  
+        <span class="secondary-color">{{ segment.departure_from.title }}</span>
+      </div>
+  
+      <span class="secondary-color">{{ calculateDuration(segment.departure, segment.arrival)}}</span>
+  
+      <div class="to route">
+        <span class="secondary-color secondary-fz">{{ segment.arrival.split('T')[0] | date:'MMM d' }}</span>
+  
+        <span class="big-font strong-font">{{ localeTime(segment.arrival) }}</span>
+  
+        <span class="secondary-color">{{ segment.arrival_to.title }}</span>
+      </div>
+    </div>
+  }
+</div>

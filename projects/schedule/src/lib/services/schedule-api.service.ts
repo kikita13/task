@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { map, switchMap } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
+import { SearchResult } from '../models/searchResult';
 
 @Injectable({
   providedIn: 'root',
@@ -13,16 +14,16 @@ export class ScheduleApiService {
     end: string,
     transport_type: string,
     date: string | number
-  ) {
+  ): Observable<SearchResult> {
     return this.http
       .get(`http://localhost:3000/yandex/seachCode/${start}/${end}`)
       .pipe(
-        switchMap((codes: any) => {
+        switchMap((codes: any): Observable<SearchResult> => {
           return this.http
-            .get(
+            .get<SearchResult>(
               `http://localhost:3000/yandex/search/${codes.start}/${codes.end}/${transport_type}/${date}`
             )
-            .pipe(map((data) => console.log(data)));
+            .pipe(map((data: SearchResult) => data));
         })
       );
   }
@@ -30,4 +31,5 @@ export class ScheduleApiService {
   getAllStations() {
     return this.http.get('http://localhost:3000/yandex/stations');
   }
+
 }
