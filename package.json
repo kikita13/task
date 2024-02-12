@@ -40,6 +40,7 @@
     "@tinkoff/ng-dompurify": "4.0.0",
     "@types/mapbox__mapbox-gl-draw": "^1.4.6",
     "@types/mapbox-gl": "^2.7.20",
+    "angular-cli-ghpages": "^2.0.0-beta.2",
     "dompurify": "3.0.6",
     "mapbox-gl": "^3.1.2",
     "rxjs": "~7.8.0",
