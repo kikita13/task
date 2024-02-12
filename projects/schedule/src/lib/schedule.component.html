@@ -1,15 +1,41 @@
 <div class="container">
   <form [formGroup]="form" (ngSubmit)="toSearch()">
-    <input type="text" formControlName="from">
-    <input type="text" formControlName="to">
-    <input type="date" formControlName="date">
+    <div class="search">
+      <div class="inputs">
+        <input type="text" placeholder="Откуда" formControlName="from">
+        <span class="line"></span>
+        <input type="text" placeholder="Куда" formControlName="to">
+      </div>
+
+      <img src="assets/svg/arrows.svg" (click)="toSwitch()">
+    </div>
+
+    <div class="date">
+      <button type="button" class="date__item--left date__item active" [class.active]="selectedDate === 'today'" (click)="chooseDate('today')">Сегодня</button>
+      <button type="button" class="date__item date__item--middle" [class.active]="selectedDate === 'tomorrow'" (click)="chooseDate('tomorrow')">Завтра</button>
+      <button type="button" (click)="showDate" class="date__item date__item--right" [class.active]="selectedDate === 'date'" (click)="chooseDate('calendar')">
+        {{!dateSelected ? 'Дата' : form.value.date | date:'MMM d'}} </button>
+      @if(showDate){
+      <tui-calendar (dayClick)="setDate($event)"></tui-calendar>
+      }
+    </div>
+
+    <div class="transport">
+      @for(item of svg; track item.path) {
+      <div class="transport__item" [class.active]="transport === item.value" (click)="chooseType(item.value)">
+        @if (item.path) {
+        <img [src]="item.path" />
+        } @else {
+        Любой
+        }
+      </div>
+      }
+    </div>
+    <button type="submit" class="submit">Найти</button>
   </form>
 
-  <div class="svg">
-    @for(item of svg; track item.path) {
-    <div class="icon" (click)="chooseType(item.value)">
-      <img [src]="item.path" />
-    </div>
-    }
-  </div>
+  @for (i of routes$ | async; track i.title) {
+    {{i}}
+  }
+
 </div>

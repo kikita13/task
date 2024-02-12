@@ -15,7 +15,7 @@ export class ScheduleApiService {
     date: string | number
   ) {
     return this.http
-      .get(`http://localhost:3000/yandex/stations/${start}/${end}`)
+      .get(`http://localhost:3000/yandex/seachCode/${start}/${end}`)
       .pipe(
         switchMap((codes: any) => {
           return this.http

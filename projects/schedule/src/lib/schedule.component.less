@@ -1,0 +1,111 @@
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .date {
+      display: flex;
+      position: relative;
+
+      tui-calendar {
+        background-color: #fff;
+        position: absolute;
+        right: -100%;
+        top: 0;
+      }
+
+      .date__item {
+        flex: 1;
+        padding: 0.5rem;
+        background-color: #e9ecef;
+
+        &.active {
+          background-color: #555;
+          color: #fff;
+        }
+
+        &--left {
+          border-radius: 4px 0 0 4px;
+          border-right: 1px solid #dbdbdb;
+        }
+
+        &--right {
+          border-left: 1px solid #dbdbdb;
+          border-radius: 0 4px 4px 0;
+        }
+      }
+    }
+
+    .transport {
+      display: flex;
+      gap: 0.5rem;
+
+      .transport__item {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        padding: 0.5rem;
+        background-color: #e9ecef;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &.active {
+          background-color: #555;
+          color: #fff;
+        }
+      }
+    }
+
+    .search {
+      display: flex;
+      border: 1px solid #dbdbdb;
+      padding: 0.3rem 1rem;
+      border-radius: 0.2rem;
+
+      img {
+        cursor: pointer;
+      }
+
+      .inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-right: 0.5rem;
+        flex: 1;
+
+        .line {
+          border-bottom: 1px solid #dbdbdb;
+        }
+
+        input {
+          border: none;
+          font-size: 16px;
+
+          &:focus-visible {
+            outline: none;
+          }
+        }
+      }
+    }
+
+    .submit {
+      flex: 1;
+      background-color: #ffe356;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+  }
+}
+
+button {
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+}
