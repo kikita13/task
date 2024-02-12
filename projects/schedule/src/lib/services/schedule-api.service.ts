@@ -23,12 +23,12 @@ export class ScheduleApiService {
   ) {
     const codes = this.findCodes(start, end, this.map);
 
-    return this.http.jsonp(
-      API_URL(
-        'search',
+    return this.http
+      .get(API_URL(
+        "search",
         `from=${codes.start}&to=${codes.end}&transport_types=${transport_type}&date=${date}&transfers=true`
-      ), 'callback'
-    ).pipe(map(data => data));
+      ))
+      .pipe(map((data) => data));
   }
 
   getAllStations(): Observable<any> {

@@ -1,1 +1,1 @@
-export const API_PREFIX = `https://api.rasp.yandex.net/v3.0`
+export const API_PREFIX = `http://localhost:4200/api/v3.0/`

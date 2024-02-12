@@ -91,7 +91,7 @@ export class ScheduleComponent implements OnInit {
         this.form.value.transport,
         this.form.value.date
       )
-      .subscribe((data: SearchResult) => {
+      .subscribe((data: any) => {
         this.segments$.next(data.segments);
         this.search$.next(data.search);
       });
