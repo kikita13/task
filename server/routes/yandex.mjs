@@ -4,14 +4,11 @@ import { API_URL } from "../consts/api-url.mjs";
 const router = Router();
 
 let cacheAllStations;
-let cacheDate;
 let settlementsAll = [];
 
 const map = new Map();
 
 router.get("/stations", async (req, res, next) => {
-  const currentDate = new Date();
-
   if (!cacheAllStations) {
     const allStations = await fetch(API_URL("stations_list"));
     const json = await allStations.json();

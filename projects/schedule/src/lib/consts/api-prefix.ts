@@ -1,0 +1,1 @@
+export const API_PREFIX = `https://api.rasp.yandex.net/v3.0`
